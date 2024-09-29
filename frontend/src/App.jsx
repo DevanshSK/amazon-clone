@@ -1,8 +1,8 @@
 import AppRoutes from "./routes/AppRoutes"
-import { usePersistentLogin } from "./hooks/usePersistentLogin";
+// import { usePersistentLogin } from "./hooks/usePersistentLogin";
 
 const App = () => {
-  usePersistentLogin();
+  // usePersistentLogin();
 
   
   return (

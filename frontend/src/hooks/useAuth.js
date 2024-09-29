@@ -1,56 +1,31 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { login, register, refreshToken, logout } from "@/services/authService";
-import { useAuth } from "@/contexts/AuthContext";
+import { useMutation } from "@tanstack/react-query";
+import { loginService } from "@/services/authService";
+import { useAuthContext } from "@/contexts/AuthContext";
 
-// Login mutation
-export const useLogin = () => {
-    const { setAuth } = useAuth();
-    const queryClient = useQueryClient();
+export const useAuth = () => {
+    const { setLogin } = useAuthContext();
 
-    return useMutation(login, {
-        onSuccess: (data) => {
-            setAuth({
-                user: data.user,
-                accessToken: data.accessToken,
-                refreshToken: data.refreshToken,
-                role: data.user.role
-            });
-
-            queryClient.invalidateQueries('user');
-        },
-        onError: (error) => {
-            console.error("Login Error:", error);
+    // Login Mutation
+    const loginMutation = useMutation(
+        {
+            mutationFn: loginService,
+            onSuccess: (data) => {
+                setLogin(data?.user);
+                alert("User logged in successfully");
+            },
+            onError: (error) => {
+                alert(error.response.data.message || "Something went wrong.")
+                console.error("Login failed:", error.response.data);
+            },
         }
-    })
-}
+    );
 
-// Register Mutation
-export const useRegister = () => {
-    return useMutation(register, {
-        onSuccess: (data) => {
-            console.log("User registered successfully");
-        },
-        onError: (error) => {
-            console.error("Registration Error:", error);
-        }
-    });
-};
+    const login = (email, password) => {
+        loginMutation.mutate({ email, password });
+    };
 
-// Logout
-export const useLogout = () => {
-    const { setAuth } = useAuth();
 
-    return useMutation(logout, {
-        onSuccess: () => {
-            setAuth({
-                user: null,
-                accessToken: null,
-                refreshToken: null,
-                role: null
-            });
-        },
-        onError: (error) => {
-            console.error("Logout failed:", error);
-        }
-    });
+    return {
+        login,
+    };
 };

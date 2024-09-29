@@ -1,16 +1,24 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-
+import dotenv from 'dotenv';
 import { errorHandler } from './utils/ApiError.js';
+
+dotenv.config({
+    path: "./.env"
+})
 
 const app = express();
 
-// Middleware setup
+const frontendUrls = process.env.CORS_ORIGIN === "*"
+    ? "*"
+    : process.env.CORS_ORIGIN?.split(",");
+
+    console.log("FRONTEND URLS: ", frontendUrls)
+
+// Middleware setup for CORS
 app.use(cors({
-    origin: process.env.CORS_ORIGIN === "*" 
-        ? "*"
-        : process.env.CORS_ORIGIN?.split(","),
+    origin: frontendUrls,
     credentials: true,
 }));
 
@@ -20,7 +28,7 @@ app.use((req, res, next) => {
     next();
 });
 app.use(express.static("public"));
-app.use(express.urlencoded({extended: true, limit: "16kb"}))
+app.use(express.urlencoded({ extended: true, limit: "16kb" }))
 app.use(cookieParser());
 
 
@@ -44,4 +52,4 @@ app.use("/api/categories", categoryRouter);
 // Custom error handling
 app.use(errorHandler);
 
-export {app};
+export { app };
