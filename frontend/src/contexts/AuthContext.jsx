@@ -20,6 +20,7 @@ export const AuthProvider = ({ children }) => {
             // localStorage.setItem("isAuthenticated", true);
             console.log("User data fetched successfully");
             setAuth({ user: data, isAuthenticated: true });
+            localStorage.setItem('isAuthenticated', true);
         },
         onError: () => {
             localStorage.removeItem("isAuthenticated");
@@ -33,6 +34,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         if (currentUser) {
           setAuth({ user: currentUser, isAuthenticated: true });
+          localStorage.setItem('isAuthenticated', true);
         }
       }, [currentUser]);
 

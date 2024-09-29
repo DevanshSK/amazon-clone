@@ -6,6 +6,12 @@ import jwt from 'jsonwebtoken';
 import mongoose from "mongoose";
 import validator from "validator";
 
+const options = {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'None',
+}
+
 const generateAccessAndRefreshTokens = async (userId) => {
     try {
         const user = await User.findById(userId);
@@ -74,10 +80,6 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
 
-    const options = {
-        httpOnly: true,
-        secure: true
-    }
 
     return res
         .status(200)
@@ -107,10 +109,6 @@ const logoutUser = asyncHandler(async (req, res) => {
         },
     );
 
-    const options = {
-        httpOnly: true,
-        secure: true
-    }
 
     return res
         .status(200)
@@ -141,11 +139,6 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
             throw new ApiError(401, "Refresh token is expired or used")
         }
 
-        const options = {
-            httpOnly: true,
-            secure: true,
-            
-        }
     
         const {accessToken, newRefreshToken} = await generateAccessAndRefreshTokens(user._id)
 
