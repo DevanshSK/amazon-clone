@@ -3,6 +3,8 @@ import LandingPage from "@/pages/LandingPage";
 import Login from "@/pages/auth/Login";
 import Register from "@/pages/auth/Register";
 import AuthLayout from "@/layouts/AuthLayout";
+import AdminLayout from "@/layouts/AdminLayout";
+import ProductsPage from "@/pages/admin/ProductsPage";
 
 
 const AppRoutes = () => (
@@ -13,6 +15,11 @@ const AppRoutes = () => (
             <Route path="/" element={<AuthLayout />}>
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
+            </Route>
+
+
+            <Route path="/admin/" element={<AdminLayout />}>
+                <Route path="dashboard" element={<ProductsPage />} />
             </Route>
         </Routes>
     </Router>

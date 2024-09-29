@@ -9,8 +9,8 @@ export const loginService = async (credentials) => {
 }
 
 // Register
-export const registerService = async (userData) => {
-    const response = await axiosInstance.post('/users/register', userData);
+export const registerService = async (credentials) => {
+    const response = await axiosInstance.post('/users/register', credentials);
     return response.data?.data;  // maybe tokens or a success message
 };
 

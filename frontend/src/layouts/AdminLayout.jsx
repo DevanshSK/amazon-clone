@@ -1,10 +1,18 @@
 import { useAuthContext } from '@/contexts/AuthContext'
 import { Navigate, Outlet } from 'react-router-dom'
 
-const AuthLayout = () => {
+const AdminLayout = () => {
     const { user } = useAuthContext();
 
-    return user ? <Navigate to="/" /> : (
+    if(!user){
+        return <Navigate to="/login"  />
+    }
+
+    if(user.role !== "ADMIN"){
+        return <Navigate to="/" />;
+    }
+
+    return (
         <div className='h-screen flex w-full justify-center'>
             <div className="w-[600px] ld:w-full flex flex-col items-start p-6">
                 <img
@@ -26,4 +34,4 @@ const AuthLayout = () => {
     )
 }
 
-export default AuthLayout
+export default AdminLayout
