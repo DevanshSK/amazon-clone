@@ -26,10 +26,22 @@ export const logoutService = async () => {
 };
 
 // Get Current User Service
+// export const getCurrentUserService = async () => {
+//     const response = await axiosInstance.get('/users/current-user', {
+//         withCredentials: true,
+//     });
+//     console.log("USER RESPONSE", response.data?.data);
+//     return response.data?.data;  // Assuming the response structure contains user data
+// };
 export const getCurrentUserService = async () => {
-    const response = await axiosInstance.get('/users/current-user', {
-        withCredentials: true,
-    });
-    console.log("USER RESPONSE", response.data?.message);
-    return response.data?.data;  // Assuming the response structure contains user data
+    try {
+        const response = await axiosInstance.get('/users/current-user', {
+            withCredentials: true,
+        });
+        console.log("USER RESPONSE:", response.data);  // Check the full structure here
+        return response.data?.data; // Ensure data contains the user info you're expecting
+    } catch (error) {
+        console.error("Error fetching user:", error);
+        throw error; // Throwing the error will trigger onError in useQuery
+    }
 };

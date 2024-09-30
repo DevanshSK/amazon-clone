@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
 });
 
 
-// // Handle token expiration and refresh
+// Handle token expiration and refresh
 // axiosInstance.interceptors.response.use(
 //   (response) => response,
 //   async (error) => {
@@ -20,23 +20,16 @@ const axiosInstance = axios.create({
 //       originalRequest._retry = true;
 //       try {
 //         // Call the refresh token api.
-//         const { data } = await axiosInstance.post("/users/refresh-token");
-//         const { accessToken } = data;
+//         const  {accessToken} = await axiosInstance.post("/users/refresh-token");
+//         // const { accessToken } = data;
 
-//         // const { setAuth } = useAuthContext();
-//         // setAuth((prev) => ({ ...prev, accessToken: accessToken }));
 //         axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
 //         // Implementation 1
-//         localStorage.setItem('accessToken', accessToken);
 //         // // Retry the request with new access token.
 //         originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
 //         return axiosInstance(originalRequest);
 //       } catch (refreshError) {
-//         // // If refresh token fails, log the user out.
-//         // localStorage.removeItem('accessToken');
-//         // window.location.href = "/login";
-//         // return Promise.reject(refreshError)
 //         return Promise.reject(refreshError);
 //       }
 //     }

@@ -1,4 +1,4 @@
-import Logout from "@/components/auth/Logout";
+import UserButton from "@/components/user-button/UserButton";
 import { useAuthContext } from "@/contexts/AuthContext"
 
 const LandingPage = () => {
@@ -14,7 +14,7 @@ const LandingPage = () => {
       <h1>{isAuthenticated ? "TRUE" : "FALSE"}</h1>
       <p>{user?.email}</p>
       <p>{user?.role}</p>
-      <Logout />
+      <UserButton />
     </div>
   )
 }

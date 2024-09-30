@@ -13,13 +13,16 @@ export const AuthProvider = ({ children }) => {
     });
 
 
-    const { data: currentUser, isLoading } = useQuery({
+    const { data: currentUser, isLoading, refetch } = useQuery({
         queryKey: ['user'],
         queryFn: getCurrentUserService,
         enabled: !!localStorage.getItem("isAuthenticated"),
         onSuccess: (data) => {
-            setAuth({ user: data, isAuthenticated: true });
-            localStorage.setItem('isAuthenticated', true);
+            console.log("ONSUCCESS METHOD RUN")
+            if(data){
+                setAuth({ user: data, isAuthenticated: true });
+                localStorage.setItem('isAuthenticated', true);
+            }
         },
         onError: () => {
             localStorage.removeItem("isAuthenticated");
@@ -28,12 +31,11 @@ export const AuthProvider = ({ children }) => {
     })
 
 
-    useEffect(() => {
-        if (currentUser) {
-          setAuth({ user: currentUser, isAuthenticated: true });
-          localStorage.setItem('isAuthenticated', true);
-        }
-      }, [currentUser]);
+    // useEffect(() => {
+    //     if (currentUser) {
+    //         setAuth({ user: currentUser, isAuthenticated: true });
+    //     }
+    //   }, [currentUser]);
 
     const logoutMutation = useMutation({
         mutationFn: logoutService,
@@ -55,13 +57,14 @@ export const AuthProvider = ({ children }) => {
     }
 
     const setLogin = (data) => {
+
         setAuth({ user: data, isAuthenticated: true });
         localStorage.setItem('isAuthenticated', true);
         queryClient.invalidateQueries("user");
     }
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated: auth.isAuthenticated, user: auth.user, logout, setLogin, isLoading }}>
+        <AuthContext.Provider value={{ isAuthenticated: auth.isAuthenticated, user: currentUser, logout, setLogin, isLoading }}>
             {children}
         </AuthContext.Provider>
     );

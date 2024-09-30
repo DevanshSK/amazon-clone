@@ -1,37 +1,42 @@
+import Navbar from '@/components/dashboards/navbar/Navbar';
+import Sidebar from '@/components/dashboards/sidebar/Sidebar';
+import { Spinner } from '@/components/loader/Spinner';
 import { useAuthContext } from '@/contexts/AuthContext'
 import { Navigate, Outlet } from 'react-router-dom'
 
 const AdminLayout = () => {
-    const { user } = useAuthContext();
+    const { user, isLoading, isAuthenticated } = useAuthContext();
 
-    if(!user){
-        return <Navigate to="/login"  />
+    if (isLoading) {
+        return (
+            <div className="w-full py-5 flex justify-center">
+                <Spinner />
+            </div>
+        );
     }
 
-    if(user.role !== "ADMIN"){
+    if (!isAuthenticated) {
+        return <Navigate to="/login" />;
+    }
+
+    if (user && user.role !== "ADMIN") {
         return <Navigate to="/" />;
     }
 
+
     return (
-        <div className='h-screen flex w-full justify-center'>
-            <div className="w-[600px] ld:w-full flex flex-col items-start p-6">
-                <img
-                    src="/images/LOGO.png"
-                    alt="LOGO"
-                    className='w-[20%] h-auto'
-                />
+        <div className="h-full">
+            <div className="h-[80px] md:pl-56 fixed inset-y-0 w-full z-50">
+                <Navbar />
+            </div>
+            <div className="hidden md:flex h-full w-56 flex-col fixed inset-y-0 z-50">
+                <Sidebar />
+            </div>
+            <main className="md:pl-56 pt-20 h-full">
                 <Outlet />
-            </div>
-            <div className="hidden lg:flex flex-1 w-full max-h-full relative bg-cream flex-col">
-                <img
-                    src="/images/loginImage.jpg"
-                    alt="background"
-                    loading="lazy"
-                    className="absolute w-full h-full object-cover object-left"
-                />
-            </div>
+            </main>
         </div>
-    )
+    );
 }
 
 export default AdminLayout
