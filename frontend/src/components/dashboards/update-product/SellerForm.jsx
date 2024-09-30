@@ -10,10 +10,10 @@ import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z.object({
-    name: z.string().min(1, { message: 'Product name is required' }),
+    seller: z.string().min(1, { message: 'Seller name is required' }),
 })
 
-const TitleForm = ({ initialData, productId }) => {
+const SellerForm = ({ initialData, productId }) => {
     const [isEditing, setIsEditing] = useState(false);
     const { updateProduct, isLoading } = useUpdateProduct();
 
@@ -22,7 +22,7 @@ const TitleForm = ({ initialData, productId }) => {
     const methods = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: initialData?.name || ""
+            seller: initialData?.seller || ""
         },
     })
 
@@ -36,7 +36,7 @@ const TitleForm = ({ initialData, productId }) => {
     return (
         <div className="mt-6 border bg-cream rounded-md p-4">
             <div className="font-medium flex items-center justify-between">
-                Product Name
+                Seller Name
                 <Button variant="ghost" onClick={toggleEdit}>
                     {isEditing ? (
                         <>Cancel</>
@@ -50,17 +50,17 @@ const TitleForm = ({ initialData, productId }) => {
             </div>
 
             {!isEditing ? (
-                <p>{initialData.name}</p>
+                <p>{initialData.seller}</p>
             ) : (
                 <FormProvider {...methods}>
                     <form onSubmit={onHandleSubmit} className="space-y-4 mt-4">
                         <Loader loading={isLoading}>
-                            <FormField control={methods.control} name="name" render={({ field }) => (
+                            <FormField control={methods.control} name="seller" render={({ field }) => (
                                 <FormItem>
                                     <FormControl>
                                         <Input
                                             disabled={isSubmitting}
-                                            placeholder="e.g. Iphone 16 pro..."
+                                            placeholder="e.g. Apple Store, Mumbai"
                                             {...field}
                                         />
                                     </FormControl>
@@ -81,4 +81,4 @@ const TitleForm = ({ initialData, productId }) => {
     )
 }
 
-export default TitleForm
+export default SellerForm

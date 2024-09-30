@@ -103,6 +103,7 @@ const updateProduct = asyncHandler(async (req, res) => {
                 price,
                 brand,
                 category,
+                seller,
                 mainImage,
             },
         },

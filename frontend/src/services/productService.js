@@ -21,7 +21,9 @@ export const getSingleProductService = async (productId) => {
 }
 
 // Update product by Id
-export const updateProductService = async (productId, productData) => {
+export const updateProductService = async ({productId, productData}) => {
+    console.log("PRODUCTID", productId)
+    console.log("PRODUCTDATA", productData)
     const response = await axiosInstance.patch(`/products/${productId}`, productData);
     return response.data?.data;
 }

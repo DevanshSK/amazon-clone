@@ -1,3 +1,4 @@
+import SellerForm from "@/components/dashboards/update-product/SellerForm";
 import TitleForm from "@/components/dashboards/update-product/TitleForm";
 import { Spinner } from "@/components/loader/Spinner";
 import { getSingleProductService } from "@/services/productService";
@@ -38,11 +39,12 @@ const ProductDetails = () => {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-0">
                 <div className="">
 
                     {/* UPDATE FORMS */}
                     <TitleForm initialData={product} productId={productId} />
+                    <SellerForm initialData={product} productId={productId} />
                     {/* <TitleForm initialData={product} productId={productId} />
                     <TitleForm initialData={product} productId={productId} />
                     <TitleForm initialData={product} productId={productId} />
