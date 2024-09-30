@@ -1,6 +1,12 @@
+import BrandForm from "@/components/dashboards/update-product/BrandForm";
+import CategoryForm from "@/components/dashboards/update-product/CategoryForm";
+import DescriptionForm from "@/components/dashboards/update-product/DescriptionForm";
+import ImageForm from "@/components/dashboards/update-product/ImageForm";
+import PriceForm from "@/components/dashboards/update-product/PriceForm";
 import SellerForm from "@/components/dashboards/update-product/SellerForm";
 import TitleForm from "@/components/dashboards/update-product/TitleForm";
 import { Spinner } from "@/components/loader/Spinner";
+import { getAllCategoriessService } from "@/services/categoryService";
 import { getSingleProductService } from "@/services/productService";
 import { useQuery } from "@tanstack/react-query";
 import { Navigate, useParams } from "react-router-dom";
@@ -9,13 +15,21 @@ const ProductDetails = () => {
     const { productId } = useParams();
 
     // Fetch product details using React Query
-    const { data: product, isLoading, isError, error } = useQuery({
+    const { data: product, isLoading: isProductFetching, isError, error } = useQuery({
         queryKey: ["product", productId],
         queryFn: () => getSingleProductService(productId),
         staleTime: 1000 * 60 * 5,
     });
 
-    if (isLoading) {
+    const { data: categories, isLoading: isCategoriesFetching } = useQuery({
+		queryKey: ['categories'],
+		queryFn: getAllCategoriessService,
+		onError: (error) => {
+			console.log("Fetching categories failed", error);
+		},
+	});
+
+    if (isProductFetching || isCategoriesFetching) {
         return (
             <div className="w-full py-5 flex justify-center">
                 <Spinner />
@@ -45,12 +59,16 @@ const ProductDetails = () => {
                     {/* UPDATE FORMS */}
                     <TitleForm initialData={product} productId={productId} />
                     <SellerForm initialData={product} productId={productId} />
-                    {/* <TitleForm initialData={product} productId={productId} />
-                    <TitleForm initialData={product} productId={productId} />
-                    <TitleForm initialData={product} productId={productId} />
-                    <TitleForm initialData={product} productId={productId} /> */}
+                    <BrandForm initialData={product} productId={productId} />
+                    <PriceForm initialData={product} productId={productId} />
+                    <CategoryForm initialData={product} productId={productId} options={categories || []} />
                     {/* UPDATE FORMS */}
 
+                </div>
+                <div className="">
+                    <DescriptionForm initialData={product} productId={productId} />
+                    <ImageForm initialData={product} productId={productId} />
+                    
                 </div>
             </div>
         </div>

@@ -25,7 +25,7 @@ const useUpdateProduct = () => {
         for (let key in values) {
             formData.append(key, values[key]);
         }
-        mutate({ productId, productData: values });
+        mutate({ productId, productData: formData });
     }
 
     return {
