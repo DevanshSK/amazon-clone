@@ -37,7 +37,11 @@ const updateProductValidator = () => {
             .withMessage("Price is required")
             .isNumeric()
             .withMessage("Price must be a number"),
-        ...mongoIdRequestBodyValidator("category")
+        body("category")
+            .optional()
+            .trim()
+            .isMongoId()
+            .withMessage(`Invalid Category`),
     ];
 };
 

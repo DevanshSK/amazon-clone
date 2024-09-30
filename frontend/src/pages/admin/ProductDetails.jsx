@@ -1,3 +1,4 @@
+import TitleForm from "@/components/dashboards/update-product/TitleForm";
 import { Spinner } from "@/components/loader/Spinner";
 import { getSingleProductService } from "@/services/productService";
 import { useQuery } from "@tanstack/react-query";
@@ -29,7 +30,28 @@ const ProductDetails = () => {
     console.log("Product", product);
 
     return (
-        <div>ProductDetails</div>
+        <div className="p-6">
+            <div className="flex items-center justify-between">
+                <div className="flex flex-col gap-y-2">
+                    <h1 className="text-2xl font-medium">Product Details</h1>
+                    <span>Here, You can view and update your product.</span>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
+                <div className="">
+
+                    {/* UPDATE FORMS */}
+                    <TitleForm initialData={product} productId={productId} />
+                    {/* <TitleForm initialData={product} productId={productId} />
+                    <TitleForm initialData={product} productId={productId} />
+                    <TitleForm initialData={product} productId={productId} />
+                    <TitleForm initialData={product} productId={productId} /> */}
+                    {/* UPDATE FORMS */}
+
+                </div>
+            </div>
+        </div>
     )
 }
 
