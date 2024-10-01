@@ -35,8 +35,22 @@ const productSchema = new Schema({
         default: 0,
     },
 },
-{
-    timestamps: true,
+    {
+        timestamps: true,
+    });
+
+productSchema.index({
+    name: 'text',
+    description: 'text',
+    seller: 'text',
+    brand: 'text',
+}, {
+    weights: {
+        name: 10,
+        seller: 5,
+        brand: 5,
+        description: 1,
+    }
 });
 
 productSchema.plugin(mongooseAggregatePaginate);

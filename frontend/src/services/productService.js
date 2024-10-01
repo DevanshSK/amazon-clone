@@ -9,7 +9,13 @@ export const createProductService = async (productData) => {
 
 // Get all product
 export const getAllProductsService = async (page) => {
-    const response = await axiosInstance.get(`/products/?page=${page.pageIndex+1}&limit=${page.pageSize}`);
+    const response = await axiosInstance.get(`/products/?page=${page.pageIndex+1}&limit=${page.pageSize}&q=${page?.query || ""}`);
+    return response.data?.data;
+}
+
+// Get products by category
+export const getProductsByCategoryService = async (page) => {
+    const response = await axiosInstance.get(`/products/category/${page.categoryId}/?page=${page.pageIndex+1}&limit=${page.pageSize}&q=${page.query}`);
     return response.data?.data;
 }
 

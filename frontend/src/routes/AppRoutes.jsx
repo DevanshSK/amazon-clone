@@ -10,13 +10,15 @@ import CreateCategory from "@/pages/admin/CreateCategory";
 import ProductDetails from "@/pages/admin/ProductDetails";
 import ProductLayout from "@/layouts/ProductLayout";
 import ProductListingPage from "@/pages/ProductListingPage";
+import ProductDetailsPage from "@/pages/ProductDetailsPage";
 
 
 const AppRoutes = () => (
     <Router>
         <Routes>
-            {/* <Route path="/" element={<ProductLayout><ProductListingPage /></ProductLayout>} /> */}
             <Route path="/" element={<LandingPage />} />
+            <Route path="/products" element={<ProductLayout><ProductListingPage /></ProductLayout>} />
+            <Route path="/product/:productId" element={<ProductLayout><ProductDetailsPage /></ProductLayout>} />
 
             <Route path="/" element={<AuthLayout />}>
                 <Route path="login" element={<Login />} />

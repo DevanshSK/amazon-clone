@@ -84,7 +84,8 @@ const FormGenerator = ({
                 </Label>
             );
         }
-        case "textarea":
+        case "textarea":{
+            const selectedValue = watch(name);
             return (
                 <Label
                     className='flex flex-col gap-2'
@@ -93,9 +94,9 @@ const FormGenerator = ({
                     {label && label}
                     <Editor
                         form={form}
-                        id={`input-${label}`}
                         placeholder={placeholder}
-                        {...register(name)}
+                        value={selectedValue}
+                        onChange={(value) => setValue(name, value, { shouldValidate: true })}
                         rows={lines}
                     />
                     <ErrorMessage
@@ -108,7 +109,7 @@ const FormGenerator = ({
                         )}
                     />
                 </Label>
-            );
+            );}
 
         case "dropzone": {
             const image = watch(name); // Using the form watch to monitor the selected file
@@ -118,7 +119,7 @@ const FormGenerator = ({
                 <Label className='flex flex-col gap-2'>
                     {label && label}
                     <div {...getRootProps()} className="relative flex flex-col items-center justify-center h-60 bg-slate-200 p-2 rounded-md border-dashed border-2 border-gray-500">
-                        {imageUrl && <img src={imageUrl} alt="Uploaded Image" className="object-contain absolute w-full h-full rounded-md" />}
+                        {imageUrl && <img src={imageUrl} alt="Uploaded Image" className="object-cover absolute w-full h-full rounded-md" />}
                         <input {...getInputProps()} />
                         <p className="text-sm text-blue-700 font-semibold">Drag and drop or click to select an image</p><br />
                         <p className="text-xs text-muted-foreground">Image (5MB max)</p>

@@ -10,7 +10,7 @@ import {
 } from "../ui/dropdown-menu"
 import { useAuthContext } from "@/contexts/AuthContext"
 
-const UserButton = () => {
+const UserButton = ({ btnClass, variant = "default" }) => {
     const { user, logout, isAuthenticated } = useAuthContext();
     const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ const UserButton = () => {
     return isAuthenticated ? (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="default" className="relative rounded-full">
+                <Button className={`relative ${btnClass}`} variant={variant}>
                     {user?.role || "User"}
                 </Button>
             </DropdownMenuTrigger>
@@ -36,14 +36,16 @@ const UserButton = () => {
 
                 <DropdownMenuSeparator />
 
-                <DropdownMenuItem
+                {user?.role === "ADMIN" && <><DropdownMenuItem
                     onClick={() => navigate("/admin/dashboard")}
                     className="font-normal"
                 >
                     Dashboard
                 </DropdownMenuItem>
 
-                <DropdownMenuSeparator />
+                    <DropdownMenuSeparator />
+                </>}
+
 
                 <DropdownMenuItem
                     onClick={() => logout()}
@@ -54,7 +56,7 @@ const UserButton = () => {
             </DropdownMenuContent>
         </DropdownMenu>
     ) : (
-        <Button onClick={() => navigate("/login")} >Login</Button>
+        <Button className={btnClass} variant={variant} onClick={() => navigate("/login")} >Login</Button>
     );
 }
 

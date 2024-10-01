@@ -14,8 +14,17 @@ import { Category } from "../models/category.model.js";
 
 
 const getAllProducts = asyncHandler(async (req, res) => {
-    const { page = 1, limit = 10 } = req.query;
-    const productAggregate = Product.aggregate([{ $match: {} }]);
+    const { page = 1, limit = 10, q = "" } = req.query;
+
+    const matchStage = q ?
+        {
+            $match: {
+                $text: { $search: q },
+            },
+        }
+        : { $match: {} };
+
+    const productAggregate = Product.aggregate([matchStage]);
 
     const products = await Product.aggregatePaginate(
         productAggregate,
@@ -140,7 +149,7 @@ const getProductById = asyncHandler(async (req, res) => {
 
 const getProductsByCategory = asyncHandler(async (req, res) => {
     const { categoryId } = req.params;
-    const { page = 1, limit = 10 } = req.query;
+    const { page = 1, limit = 10, q = "" } = req.query;
 
     const category = await Category.findById(categoryId).select("name _id");
 
@@ -148,13 +157,14 @@ const getProductsByCategory = asyncHandler(async (req, res) => {
         throw new ApiError(404, "Category does not exist");
     }
 
-    const productAggregate = Product.aggregate([
-        {
-            $match: {
-                category: new mongoose.Types.ObjectId(categoryId),
-            },
+    const matchStage = {
+        $match: {
+            category: new mongoose.Types.ObjectId(categoryId),
+            ...(q && { $text: { $search: q } }),
         },
-    ]);
+    };
+
+    const productAggregate = Product.aggregate([matchStage]);
 
     const products = await Product.aggregatePaginate(
         productAggregate,

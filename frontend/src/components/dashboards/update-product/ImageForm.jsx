@@ -82,7 +82,7 @@ const ImageForm = ({ initialData, productId }) => {
                     <div className="relative aspect-video mt-2">
                         <img
                             alt="Product Image"
-                            className="object-contain absolute w-full h-full rounded-md"
+                            className="object-cover absolute w-full h-full rounded-md"
                             src={initialData?.mainImage?.url}
                         />
                     </div>
@@ -99,7 +99,7 @@ const ImageForm = ({ initialData, productId }) => {
                                         <div className="relative flex items-center justify-center h-60  bg-slate-200 p-2 rounded-md border-dashed border-2 border-gray-500" {...getRootProps()}>
                                             {imageUrl && <img
                                                 alt="Selected image"
-                                                className="object-contain absolute w-full h-full rounded-md"
+                                                className="object-cover absolute w-full h-full rounded-md"
                                                 src={imageUrl}
                                             />}
                                             <input {...getInputProps()} />

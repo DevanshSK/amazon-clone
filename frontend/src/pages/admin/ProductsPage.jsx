@@ -21,10 +21,12 @@ const ProductsPage = () => {
         },
     });
 
+    console.log(data)
+
 
     // Prefetch the next page!
     React.useEffect(() => {
-        if (!isPlaceholderData && data?.hasMore) {
+        if (!isPlaceholderData && data?.hasNextPage) {
             const newPage = {
                 ...pagination,
                 pageIndex: pagination.pageIndex + 1,
