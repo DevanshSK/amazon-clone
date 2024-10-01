@@ -1,6 +1,6 @@
 import { getCurrentUserService, logoutService } from "@/services/authService";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { toast } from "react-toastify";
 
 const AuthContext = createContext();
@@ -13,10 +13,11 @@ export const AuthProvider = ({ children }) => {
     });
 
 
-    const { data: currentUser, isLoading, refetch } = useQuery({
+    const { data: currentUser, isLoading } = useQuery({
         queryKey: ['user'],
         queryFn: getCurrentUserService,
         enabled: !!localStorage.getItem("isAuthenticated"),
+        refetchInterval: 1000 * 60 * 15,
         onSuccess: (data) => {
             console.log("ONSUCCESS METHOD RUN")
             if(data){

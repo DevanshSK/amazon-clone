@@ -8,11 +8,14 @@ import ProductsPage from "@/pages/admin/ProductsPage";
 import CreateProduct from "@/pages/admin/CreateProduct";
 import CreateCategory from "@/pages/admin/CreateCategory";
 import ProductDetails from "@/pages/admin/ProductDetails";
+import ProductLayout from "@/layouts/ProductLayout";
+import ProductListingPage from "@/pages/ProductListingPage";
 
 
 const AppRoutes = () => (
     <Router>
         <Routes>
+            {/* <Route path="/" element={<ProductLayout><ProductListingPage /></ProductLayout>} /> */}
             <Route path="/" element={<LandingPage />} />
 
             <Route path="/" element={<AuthLayout />}>
@@ -27,6 +30,8 @@ const AppRoutes = () => (
                 <Route path="create-category" element={<CreateCategory />} />
                 <Route path="product/:productId" element={<ProductDetails />} />
             </Route>
+
+
         </Routes>
     </Router>
 );

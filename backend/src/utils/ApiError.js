@@ -25,6 +25,7 @@ class ApiError extends Error {
 const errorHandler = (err, req, res, next) => {
     // If the error is an instance of ApiError, use its status and message
     if (err instanceof ApiError) {
+
         return res.status(err.statusCode).json({
             success: false,
             message: err.message,

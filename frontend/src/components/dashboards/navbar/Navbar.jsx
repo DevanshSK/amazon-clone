@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/sheet";
 import NavItems from "./NavItems";
 
-const Navbar = () => {
+const Navbar = ({routes}) => {
 	return (
 		<div className='p-4 border-b h-full flex items-center bg-white shadow-sm'>
 			<Sheet>
@@ -15,7 +15,7 @@ const Navbar = () => {
 					<Menu />
 				</SheetTrigger>
 				<SheetContent side="left" className="p-0 bg-cream">
-					<Sidebar />
+					<Sidebar routes={routes} />
 				</SheetContent>
 			</Sheet>
 

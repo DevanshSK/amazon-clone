@@ -1,6 +1,4 @@
 import axios from 'axios';
-// import { refreshToken } from './authService';
-import { useAuthContext } from '@/contexts/AuthContext';
 
 
 const axiosInstance = axios.create({
@@ -9,33 +7,34 @@ const axiosInstance = axios.create({
 });
 
 
-// Handle token expiration and refresh
-// axiosInstance.interceptors.response.use(
-//   (response) => response,
-//   async (error) => {
-//     const originalRequest = error.config;
+// Axios Response Interceptor for handling token expiration
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
 
-//     // If access token expired and we have not retried yet.
-//     if (error.response.status === 401 && !error?.config?.url?.includes("login") && !originalRequest._retry) {
-//       originalRequest._retry = true;
-//       try {
-//         // Call the refresh token api.
-//         const  {accessToken} = await axiosInstance.post("/users/refresh-token");
-//         // const { accessToken } = data;
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
 
-//         axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+      try {
+        // Try to get a new access token using the refresh token
+        await axiosInstance.post("/users/refresh-token");
+        console.log("REFRESHING TOKEN", originalRequest);
+        // // Retry the original request with new access token
+        return axiosInstance(originalRequest);
+      } catch (refreshError) {
+        if (refreshError.response?.status === 403) {
+          // Redirect to login if refresh token is expired
+          console.log("REFRESH TOKEN FAILED", refreshError.response);
+          localStorage.removeItem("isAuthenticated");
+          window.location.href = '/login';
+        }
+      }
+    }
 
-//         // Implementation 1
-//         // // Retry the request with new access token.
-//         originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
-//         return axiosInstance(originalRequest);
-//       } catch (refreshError) {
-//         return Promise.reject(refreshError);
-//       }
-//     }
+    return Promise.reject(error);
+  }
+);
 
-//     return Promise.reject(error);
-//   }
-// )
 
 export default axiosInstance;
